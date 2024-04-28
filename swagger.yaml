@@ -1,0 +1,329 @@
+openapi: 3.0.0
+info:
+  title: Place Booking and Review API
+  version: 1.0.0
+  description: API for booking places, managing bookings, and posting reviews.
+servers:
+  - url: http://localhost:5000/api
+paths:
+  /users/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRegister"
+      responses:
+        "201":
+          description: User registered successfully
+  /users/login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLogin"
+      responses:
+        "200":
+          description: User logged in successfully
+  /users:
+    get:
+      summary: Get a list of all users
+      responses:
+        "200":
+          description: A list of users
+  /places:
+    get:
+      summary: Get all places
+      responses:
+        "200":
+          description: A list of places retrieved successfully
+    post:
+      summary: Add a new place
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Place"
+      responses:
+        "201":
+          description: Place added successfully
+  /places/{placeId}:
+    get:
+      summary: Get a specific place by ID
+      parameters:
+        - in: path
+          name: placeId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Place details retrieved successfully
+  /bookPlace:
+    post:
+      summary: Book a place
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingRequest"
+      responses:
+        "201":
+          description: Booking created
+  /myBookings/{userId}:
+    get:
+      summary: Get bookings by user ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Bookings retrieved successfully
+  /deleteBooking/{bookingId}:
+    delete:
+      summary: Delete a booking by ID
+      parameters:
+        - in: path
+          name: bookingId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Booking deleted successfully
+  /reviews:
+    post:
+      summary: Post a review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewRequest"
+      responses:
+        "201":
+          description: Review created
+  /reviews/{placeId}:
+    get:
+      summary: Get reviews by place ID
+      parameters:
+        - in: path
+          name: placeId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reviews retrieved successfully
+  /products:
+    get:
+      summary: Get all products
+      responses:
+        "200":
+          description: A list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+        "500":
+          description: Internal server error
+    post:
+      summary: Create a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "201":
+          description: Product created successfully
+        "400":
+          description: Invalid product data provided
+    delete:
+      summary: Delete all products
+      responses:
+        "200":
+          description: All products deleted successfully
+        "500":
+          description: Internal server error
+  /products/{productId}:
+    get:
+      summary: Get a product by its ID
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product details retrieved successfully
+        "404":
+          description: Product not found
+        "500":
+          description: Internal server error
+    put:
+      summary: Update a product by its ID
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: Product updated successfully
+        "404":
+          description: Product not found
+        "500":
+          description: Internal server error
+    delete:
+      summary: Delete a product by its ID
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product deleted successfully
+        "404":
+          description: Product not found
+        "500":
+          description: Internal server error
+  /products/bulk:
+    post:
+      summary: Add multiple products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Product"
+      responses:
+        "201":
+          description: Products added successfully
+        "400":
+          description: Invalid product data provided
+  /products/category/{category}:
+    get:
+      summary: Get products by category
+      parameters:
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Products retrieved successfully
+        "404":
+          description: No products found in the specified category
+        "500":
+          description: Internal server error
+components:
+  schemas:
+    UserRegister:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    Place:
+      type: object
+      properties:
+        name:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+    BookingRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        placeId:
+          type: string
+        numberOfPeople:
+          type: integer
+        price:
+          type: number
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+    ReviewRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        placeId:
+          type: string
+        rating:
+          type: integer
+        comment:
+          type: string
+
+    Product:
+      type: object
+      required:
+        - name
+        - price
+        - description
+        - image
+        - category
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+        image:
+          type: string
+        available:
+          type: boolean
+          default: true
+        category:
+          type: string
