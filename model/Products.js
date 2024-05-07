@@ -26,6 +26,10 @@ const productsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    city: {
+        type: String,
+        required: true
+    }
 
 
 
