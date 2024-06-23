@@ -7,6 +7,8 @@ const placeRoutes = require("./routes/PlaceRoutes");
 const bookingRoutes = require("./routes/BookingRoutes");
 const reviewRoutes = require("./routes/ReviewRoute");
 const ProductsRoutes = require("./routes/ProductsRoutes");
+const OrderProducts = require("./routes/OrderProducts");
+const laptopRoutes = require("./routes/LaptopRoutes"); // Import the laptop routes
 const auth = require("./middleware/auth");
 
 const swaggerUi = require("swagger-ui-express");
@@ -29,7 +31,9 @@ mongoose
 app.use("/api/users", userRoutes);
 app.use("/api/places", placeRoutes);
 app.use("/api/products", ProductsRoutes);
+app.use("/api/products/order", OrderProducts);
 app.use("/api", bookingRoutes);
+app.use("/api/laptops", laptopRoutes); // Use the laptop routes
 app.use("/api", auth, reviewRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

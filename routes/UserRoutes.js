@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
     // Compare the provided password with the hashed password in the database
     const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (!isMatch) {
-      return res.status(400).send({ message: 'Invalid credentials' });
+      return res.status(400).send({ message: 'Wrong password' });
     }
 
     // Generate JWT Token
