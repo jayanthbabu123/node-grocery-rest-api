@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
 
 // Route to post an array of places
 router.post('/', async (req, res) => {
+    console.log(req.body, 'places');
     try {
       const places = await Place.insertMany(req.body); // req.body should be an array of objects
       res.status(201).send(places);
@@ -33,6 +34,32 @@ router.get('/:city', async (req, res) => {
       return res.status(404).send({ message: 'No places found in the specified city' });
     }
     res.status(200).send(places);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// Route to update a place
+router.put('/:placeId', async (req, res) => {
+  try {
+    const place = await Place.findByIdAndUpdate(req.params.placeId, req.body, { new: true });
+    if (!place) {
+      return res.status(404).send({ message: 'Place not found' });
+    }
+    res.status(200).send(place);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// Route to delete a place
+router.delete('/:placeId', async (req, res) => {
+  try {
+    const place = await Place.findByIdAndDelete(req.params.placeId);
+    if (!place) {
+      return res.status(404).send({ message: 'Place not found' });
+    }
+    res.status(200).send({ message: 'Place deleted successfully' });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }

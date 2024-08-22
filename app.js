@@ -16,7 +16,7 @@ const YAML = require("yamljs");
 const swaggerDocument = YAML.load("./swagger.yaml");
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 app.use(cors()); // Use CORS
 app.use(express.json()); // Middleware to parse JSON bodies
